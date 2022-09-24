@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'products',
     'rest_framework.authtoken',
     'djoser',
+    'drf_yasg',  #swagger
+    'rest_framework_swagger',
 
 
 ]
@@ -138,4 +140,18 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
+}
+
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Basic': {
+            'type': 'basic'
+      },
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
 }
