@@ -41,3 +41,16 @@ class ProductComment(models.Model):
 class ProductLike(models.Model):
     product = models.ForeignKey('products.Product', models.CASCADE, related_name='likes')
     user = models.ForeignKey(User, models.SET_NULL, null=True)
+
+
+# настройка рейтинга
+class ProductRating(models.Model):
+    RATE_CHOICES = (
+        (4, "excellent"),
+        (3, "very good"),
+        (2, "good"),
+        (1, "bad"),
+    )
+    product = models.ForeignKey('products.Product', models.CASCADE, related_name='rating')
+    user = models.ForeignKey(User, models.SET_NULL, null=True)
+    rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES, blank=True)

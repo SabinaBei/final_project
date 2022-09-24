@@ -4,9 +4,10 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from products.models import Product, ProductComment, ProductLike
+from products.models import Product, ProductComment, ProductLike, ProductRating
 from products.permissions import ProductPermission
-from products.serializers import ProductSerializers, ProductDetailSerializers, ProductCommentSerializers
+from products.serializers import ProductSerializers, ProductDetailSerializers, ProductCommentSerializers, \
+    RatingSerializers
 from rest_framework import viewsets, status
 from django_filters import rest_framework as filters
 
@@ -86,3 +87,18 @@ class ProductLikeView(APIView):
             ProductLike.objects.create(product_id=product_pk, user=request.user)
             return Response({'success': 'liked'})
 
+
+# настройка рейтинга
+class RatingView(ModelViewSet):
+    queryset = ProductRating.objects.all()
+    serializer_class = RatingSerializers
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(
+            user=self.request.user,
+            product_id=kwargs.get('product_pk')
+        )
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

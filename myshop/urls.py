@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import routers
-from products.views import ProductViewSet, CommentView, ProductLikeView
+from products.views import ProductViewSet, CommentView, ProductLikeView, RatingView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
@@ -39,4 +39,6 @@ urlpatterns = [
     path('<int:product_pk>/comment/create/', CommentView.as_view({'post':'create'})),
     # настройка лайков
     path('<int:product_pk>/like/', ProductLikeView.as_view()),
+    # настройка рейтинга
+    path('<int:product_pk>/rating/', RatingView.as_view({'get': 'list', 'post': 'create'})),
 ]
