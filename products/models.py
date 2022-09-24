@@ -36,3 +36,8 @@ class ProductComment(models.Model):
     user = models.ForeignKey(User, models.SET_NULL, null=True)
     text = models.TextField()
 
+
+# настройка лайков
+class ProductLike(models.Model):
+    product = models.ForeignKey('products.Product', models.CASCADE, related_name='likes')
+    user = models.ForeignKey(User, models.SET_NULL, null=True)

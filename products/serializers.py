@@ -19,13 +19,14 @@ class ProductDetailSerializers(serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True)
     owner_name = serializers.CharField(read_only=True)
     comments = ProductCommentSerializers(many=True)
+    likes_count = serializers.IntegerField()
 
 
     class Meta:
         model = Product
         fields = (
             'id', 'name', 'price', 'description', 'category', 'user',
-            'category_name', 'owner_name', 'comments'
+            'category_name', 'owner_name', 'comments', 'likes_count'
         )
         extra_kwargs = {'user': {'read_only': True}}
 

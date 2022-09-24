@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import routers
-from products.views import ProductViewSet, CommentView
+from products.views import ProductViewSet, CommentView, ProductLikeView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
@@ -37,4 +37,6 @@ urlpatterns = [
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     # настройка комментариев
     path('<int:product_pk>/comment/create/', CommentView.as_view({'post':'create'})),
+    # настройка лайков
+    path('<int:product_pk>/like/', ProductLikeView.as_view()),
 ]

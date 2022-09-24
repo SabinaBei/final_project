@@ -1,9 +1,10 @@
 from django.db.models import Count, F
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from products.models import Product, ProductComment
+from products.models import Product, ProductComment, ProductLike
 from products.permissions import ProductPermission
 from products.serializers import ProductSerializers, ProductDetailSerializers, ProductCommentSerializers
 from rest_framework import viewsets, status
@@ -45,7 +46,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         queryset = Product.objects.annotate(
             category_name=F('category__name'),
             owner_name=F('user__username'),
-            # likes_count=Count('likes'),
+            likes_count=Count('likes'),
         ).order_by('-id')
         return queryset
 
@@ -68,4 +69,20 @@ class CommentView(ModelViewSet):
         )
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+# настройка лайков
+class ProductLikeView(APIView):
+
+    def get(self, request, product_pk):
+        created = ProductLike.objects.filter(product_id=product_pk, user=request.user).exists()
+        if created:
+            ProductLike.objects.filter(
+                product_id=product_pk,
+                user=request.user
+            ).delete()
+            return Response({'success': 'unliked'})
+        else:
+            ProductLike.objects.create(product_id=product_pk, user=request.user)
+            return Response({'success': 'liked'})
 
