@@ -23,10 +23,16 @@ class Product(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
 
-
     class Meta:
         ordering = ('name',)
         index_together = (('id'),)
 
     def __str__(self):
         return self.name
+
+# настройка комментариев
+class ProductComment(models.Model):
+    product = models.ForeignKey('products.Product', models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, models.SET_NULL, null=True)
+    text = models.TextField()
+
