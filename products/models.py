@@ -54,3 +54,4 @@ class ProductRating(models.Model):
     product = models.ForeignKey('products.Product', models.CASCADE, related_name='rating')
     user = models.ForeignKey(User, models.SET_NULL, null=True)
     rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES, blank=True)
+

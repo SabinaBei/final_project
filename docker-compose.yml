@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+ db:
+   image: postgres:13.3
+   volumes:
+     - postgres_data:/var/lib/postgresql/data/
+   environment:
+     POSTGRES_DB: "finalproject_db"
+     POSTGRES_USER: "finalproject_user"
+     POSTGRES_PASSWORD: "finalproject_pass"
+   ports:
+     - "5433:5433"
+ web:
+   build: .
+   command: python manage.py runserver 0.0.0.0:8000
+   volumes:
+     - .:/myshop
+   ports:
+     - "8000:8000"
+   depends_on:
+     - db
+volumes:
+  postgres_data:
