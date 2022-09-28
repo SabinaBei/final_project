@@ -1,10 +1,12 @@
+### Всем привет, меня зовут Сабина и я новичок в мире Python.
+
 # Это мой финальный проект - интернет-магазин "final_project"
 
-## Python 3.8.10
-## Django 4.1.1
-## djangorestframework 3.13.1
+### Python 3.8.10
+### Django 4.1.1
+### djangorestframework 3.13.1
 
-### Основные модели данного проекта: Продукты и Категории
+## Основные модели данного проекта: Продукты и Категории
     
     class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True)
